@@ -9,7 +9,8 @@ public class Main {
             myLL.addFirst(i);
         }
 
-        System.out.println(myLL.contains(123));
+        //System.out.println(myLL.contains(123));
+        myLL.display();
 
     }
 }
