@@ -62,86 +62,327 @@ public class MyLL<T> {
 
     public void add(int index, T data) {
 
+        Node<T> newNode = new Node<>(data);
 
+        if(head == null)
+        {
+            head = tail = newNode;
+        }
+        else
+        {
+            Node<T> current = head;
+            int counter = 0;
 
+            while(counter != index - 1 && current.getNext() != null)
+            {
+                current = current.getNext();
+            }
+
+            newNode.setNext(current.getNext());
+            current.setNext(newNode);
+        }
+
+        size++;
 
         // TODO: Implement this method - replace object with generic
         // Hint: Be careful with index bounds and pointer order!
     }
 
-    public int removeFirst() {
+    public Node<T> removeFirst() {
+
+        Node<T> temp;
+
+        if(head == null)
+        {
+            return null;
+        }
+        else if(head.getNext() == null)
+        {
+            temp = head;
+            head = null;
+            size--;
+            return temp;
+        }
+        else
+        {
+            temp = head;
+            head = head.getNext();
+            size--;
+            return temp;
+        }
+
         // TODO: Implement this method
         // Hint: What happens when you remove the only element?
-        return -1;
     }
 
-    public int removeLast() {
+    public Node<T> removeLast() {
+
+        Node<T> current = head;
+        Node<T> temp;
+
+        if(head == null)
+        {
+            return null;
+        }
+        else if(head.getNext() == null)
+        {
+            temp = head;
+            head = null;
+            size--;
+            return temp;
+        }
+
+        while(current.getNext() != null && current.getNext().getNext() != null)
+        {
+            current = current.getNext();
+        }
+
+        temp = current.getNext();
+        current.setNext(null);
+        size--;
+        return temp;
+
         // TODO: Implement this method
         // Hint: What happens when you remove the only element?
-        return -1;
     }
 
     public boolean remove(T data) {
+
+        boolean b = false;
+        Node<T> current = head;
+
+        if(head == null)
+        {
+            return b;
+        }
+        else if(head.getData().equals(data))
+        {
+            head = head.getNext();
+            size--;
+            b = true;
+        }
+
+        while(current.getNext() != null)
+        {
+            if(current.getNext().getData().equals(data))
+            {
+                current.setNext(current.getNext().getNext());
+                b = true;
+                size--;
+            }
+            current = current.getNext();
+        }
+
+        return b;
+
         // TODO: Implement this method - replace object with generic
         // Hint: You need the node BEFORE the one you're removing!
-        return false;
     }
 
     public boolean removeFirstOccurrence(T data) {
-        // TODO: Implement this method - replace object with generic
+
+        Node<T> current = head;
+
+        if(head == null)
+        {
+            return false;
+        }
+        else if(head.getData().equals(data))
+        {
+            head = head.getNext();
+            size--;
+            return true;
+        }
+
+        while(current.getNext() != null)
+        {
+            if(current.getNext().getData().equals(data))
+            {
+                current.setNext(current.getNext().getNext());
+                size--;
+                return true;
+            }
+            current = current.getNext();
+        }
+
         return false;
+
+        // TODO: Implement this method - replace object with generic
     }
 
     public boolean removeLastOccurrence(T data) {
+
+        boolean b = false;
+        Node<T> removeNextNode = null;
+        Node<T> current = head;
+
+        if(head == null)
+        {
+            return b;
+        }
+        else if(head.getData().equals(data))
+        {
+            head = head.getNext();
+            size--;
+            b = true;
+        }
+
+        while(current.getNext() != null)
+        {
+            if(current.getNext().getData().equals(data))
+            {
+                removeNextNode = current;
+                b = true;
+            }
+            current = current.getNext();
+        }
+
+        if(removeNextNode != null)
+        {
+            removeNextNode.setNext(removeNextNode.getNext().getNext());
+            size--;
+        }
+
+        return b;
+
         // TODO: Implement this method - replace object with generic
         // Hint: Track the previous node of the last occurrence found
-        return false;
     }
 
     public void clear() {
+
+        head = null;
+        size = 0;
         // TODO: Implement this method
     }
 
 
     public T get(int index) {
+        if(head == null)
+        {
+            return null;
+        }
+
+        Node<T> current = head;
+
+        for(int i = 0; i < index; i++)
+        {
+            current = current.getNext();
+        }
+
+        return current.getData();
+
         // TODO: Implement this method - replace object with generic
         // Hint: Use a loop counter to traverse the right number of steps
-        return null;
     }
 
     public T getFirst() {
+
+        if(head == null)
+        {
+            return null;
+        }
+
+        return head.getData();
+
         // TODO: Implement this method - replace object with generic
         // Hint: Check if list is empty first!
-        return null;
     }
 
     public T getLast() {
+
+        if(head == null)
+        {
+            return null;
+        }
+
+        Node<T> current = head;
+
+        while(current.getNext() != null)
+        {
+            current = current.getNext();
+        }
+
+        return current.getData();
+
         // TODO: Implement this method - replace object with generic
         // Hint: Traverse to the end or use tail pointer if available
-        return null;
     }
 
 
     public boolean contains(T data) {
+
+        if(head == null)
+            return false;
+
+        Node<T> current = head;
+
+        while(current != null)
+        {
+            if(current.getData().equals(data))
+                return true;
+
+            current = current.getNext();
+        }
+
+        return false;
+
         // TODO: Implement this method - replace object with generic
         // Hint: Traverse the entire list checking each node's data
-        return false;
     }
 
     public int indexOf(T data) {
+
+        Node<T> current = head;
+        int index = 0;
+
+        while(current != null)
+        {
+            if(current.getData().equals(data))
+            {
+                return index;
+            }
+
+            index++;
+            current = current.getNext();
+        }
+
+        return -1;
+
         // TODO: Implement this method - replace object with generic
         // Hint: Keep track of current index while traversing
         // Return -1 if not found
-        return -1;
     }
 
     public int lastIndexOf(T data) {
+
+
+        int ind = -1;
+        Node<T> current = head;
+        int index = 0;
+
+        while(current != null)
+        {
+            if(current.getData().equals(data))
+            {
+                ind = index;
+            }
+
+            index++;
+            current = current.getNext();
+        }
+
+        return ind;
+
         // TODO: Implement this method - replace object with generic
         // Hint: Track the last found index during traversal
-        return -1;
     }
 
     public T set(int index, T data) {
+
+
+
+
         // TODO: Implement this method - replace object with generic
         // Hint: Similar to get(), but replace the data
         // Returns old value
